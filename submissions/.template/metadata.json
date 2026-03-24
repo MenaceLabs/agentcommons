@@ -1,0 +1,13 @@
+{
+  "name": "your-dataset-name",
+  "version": "1.0.0",
+  "embedding_model": "nomic-embed-text",
+  "topic_tags": ["tag1", "tag2"],
+  "agent_type": "engineering",
+  "record_count": 0,
+  "language": "en",
+  "submitted_by": "your-github-username",
+  "submitted_at": "YYYY-MM-DD",
+  "provenance": [],
+  "description": "Describe what domain knowledge this dataset contains and how it was generated."
+}

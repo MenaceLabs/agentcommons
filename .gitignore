@@ -1,0 +1,14 @@
+# Never commit actual databases — they may contain sensitive data
+*.db
+
+# Never commit credentials
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
