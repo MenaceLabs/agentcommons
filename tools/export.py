@@ -117,13 +117,62 @@ def export_dataset(db_path: Path, tags: list[str], out_path: Path, name: str) ->
     print(f"  5. Submit via Pull Request to community/<topic>/{name}/")
 
 
+def list_tags(db_path: Path) -> None:
+    """Show all tags in the database with memory counts, flagging blocked tags."""
+    if not db_path.exists():
+        print(f"Error: database not found at {db_path}")
+        return
+
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    rows = conn.execute("SELECT tags FROM memories").fetchall()
+    conn.close()
+
+    if not rows:
+        print("No memories found in database.")
+        return
+
+    tag_counts = {}
+    for row in rows:
+        for tag in json.loads(row["tags"]):
+            tag_counts[tag] = tag_counts.get(tag, 0) + 1
+
+    domain_tags   = {t: c for t, c in tag_counts.items() if t not in BLOCKED_TAGS}
+    personal_tags = {t: c for t, c in tag_counts.items() if t in BLOCKED_TAGS}
+
+    print(f"Tags in {db_path.name}:\n")
+
+    if domain_tags:
+        print("  Exportable (domain):")
+        for tag, count in sorted(domain_tags.items(), key=lambda x: -x[1]):
+            print(f"    {tag}: {count} {'memory' if count == 1 else 'memories'}")
+
+    if personal_tags:
+        print("\n  Blocked (personal — never exported):")
+        for tag, count in sorted(personal_tags.items(), key=lambda x: -x[1]):
+            print(f"    {tag}: {count} {'memory' if count == 1 else 'memories'}")
+
+    print(f"\nTo export, run:")
+    if domain_tags:
+        example_tags = ",".join(list(domain_tags.keys())[:3])
+        print(f"  python export.py --db {db_path} --tags {example_tags} --out ./my-dataset")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Export domain memories for AgentCommons submission.")
-    parser.add_argument("--db",   required=True, help="Path to memory.db")
-    parser.add_argument("--tags", required=True, help="Comma-separated topic tags to export")
-    parser.add_argument("--out",  required=True, help="Output directory for the dataset")
-    parser.add_argument("--name", default=None,  help="Dataset name (defaults to tags joined by dashes)")
+    parser.add_argument("--db",        required=True,               help="Path to memory.db")
+    parser.add_argument("--tags",      default=None,                help="Comma-separated topic tags to export")
+    parser.add_argument("--out",       default=None,                help="Output directory for the dataset")
+    parser.add_argument("--name",      default=None,                help="Dataset name (defaults to tags joined by dashes)")
+    parser.add_argument("--list-tags", action="store_true",         help="List all available tags in the database")
     args = parser.parse_args()
+
+    if args.list_tags:
+        list_tags(Path(args.db))
+        return
+
+    if not args.tags or not args.out:
+        parser.error("--tags and --out are required unless using --list-tags")
 
     tags = [t.strip() for t in args.tags.split(",")]
     name = args.name or "-".join(tags)
