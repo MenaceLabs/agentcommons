@@ -18,7 +18,7 @@ from datetime import date
 from pathlib import Path
 
 # Tags that indicate personal/interpersonal content — never exportable
-BLOCKED_TAGS = {"personality", "relationship", "style", "personal", "private"}
+BLOCKED_TAGS = {"personality", "relationship", "style", "personal", "private", "preferences", "feedback", "decision"}
 
 
 def export_dataset(db_path: Path, tags: list[str], out_path: Path, name: str) -> None:

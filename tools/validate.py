@@ -35,7 +35,7 @@ PII_PATTERNS = [
     (r"\b(?:\d{1,3}\.){3}\d{1,3}\b",                          "IP address"),
 ]
 
-BLOCKED_TAGS = {"personality", "relationship", "style", "personal", "private"}
+BLOCKED_TAGS = {"personality", "relationship", "style", "personal", "private", "preferences", "feedback", "decision"}
 
 
 def validate(dataset_path: Path) -> bool:
