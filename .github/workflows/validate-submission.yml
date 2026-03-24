@@ -1,0 +1,48 @@
+name: Validate Dataset Submission
+
+on:
+  pull_request:
+    paths:
+      - 'community/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Find changed datasets
+        id: changed
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          DATASETS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD \
+            | grep '^community/' \
+            | awk -F'/' '{print $1"/"$2"/"$3}' \
+            | sort -u)
+          echo "datasets<<EOF" >> $GITHUB_OUTPUT
+          echo "$DATASETS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Validate each dataset
+        run: |
+          FAILED=0
+          while IFS= read -r dataset; do
+            [ -z "$dataset" ] && continue
+            echo "──────────────────────────────"
+            echo "Validating: $dataset"
+            echo "──────────────────────────────"
+            if ! python tools/validate.py --dataset "$dataset"; then
+              FAILED=1
+            fi
+          done <<< "${{ steps.changed.outputs.datasets }}"
+          if [ $FAILED -ne 0 ]; then
+            echo ""
+            echo "One or more datasets failed validation. Fix the errors above before merging."
+            exit 1
+          fi
+          echo ""
+          echo "All datasets passed validation."
