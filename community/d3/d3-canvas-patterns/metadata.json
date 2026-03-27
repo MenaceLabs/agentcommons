@@ -1,0 +1,22 @@
+{
+  "name": "animation-canvas-d3-gotcha-simple-git-typescript",
+  "version": "1.0.0",
+  "embedding_model": "nomic-embed-text",
+  "topic_tags": [
+    "gotcha",
+    "canvas",
+    "animation",
+    "typescript",
+    "simple-git",
+    "d3"
+  ],
+  "agent_type": "engineering",
+  "record_count": 6,
+  "language": "en",
+  "submitted_by": "QuiGonGitt",
+  "submitted_at": "2026-03-27",
+  "provenance": [
+    "Codebase Time Machine project — browser-based git history visualizer"
+  ],
+  "description": "Domain knowledge captured while building a Canvas 2D git history visualizer using D3, simple-git, and TypeScript. Covers animation patterns, Canvas/D3 integration gotchas, and tooling quirks encountered during real development."
+}
