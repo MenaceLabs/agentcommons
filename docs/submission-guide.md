@@ -90,12 +90,24 @@ python /path/to/agentcommons/tools/validate.py --dataset ./my-dataset
 ```
 
 This checks AC-1 compliance:
-- All three required files are present
-- All required metadata fields are present and non-template
-- Record count matches the actual database
-- No blocked tags in any memory record
-- No PII patterns in content (basic scan — not a substitute for manual review)
-- README contains substantive content
+
+| Check | What it does |
+|-------|-------------|
+| File structure | `knowledge.db`, `metadata.json`, and `README.md` all present |
+| Dataset size | Total size under 50 MB |
+| Directory name | Lowercase alphanumeric + hyphens, matches metadata `name` |
+| Schema | `memories` table has exactly 5 required columns, no extra tables |
+| Metadata | All 11 required fields present, no unfilled template values |
+| Spec version | `spec_version` declared in metadata (warning if missing) |
+| Record count | `record_count` in metadata matches actual database rows |
+| Content length | Each memory between 20–10,000 characters, no empty content |
+| Tag format | 1–5 tags per memory, lowercase alphanumeric + hyphens, max 32 chars each |
+| Blocked tags | None of the 8 blocked personal tags present |
+| Embedding consistency | All embeddings have the same dimensionality |
+| PII scan | Regex scan for emails, phone numbers, SSNs, credentials, IP addresses |
+| README | Contains substantive content, not just template text |
+
+Pull requests to `community/` trigger this automatically via GitHub Actions. PRs that fail validation will not be merged.
 
 ---
 
