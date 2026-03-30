@@ -1,6 +1,7 @@
 {
   "name": "your-dataset-name",
   "version": "1.0.0",
+  "spec_version": "AC-1.0",
   "embedding_model": "nomic-embed-text",
   "topic_tags": ["tag1", "tag2"],
   "agent_type": "engineering",
