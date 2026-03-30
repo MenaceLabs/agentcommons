@@ -37,7 +37,11 @@ agentcommons/
 
 ---
 
-## Dataset Format
+## Dataset Standard
+
+All datasets must conform to the **[AC-1 Dataset Specification](docs/AC-1-spec.md)** — the formal standard governing schema, metadata, tagging, embeddings, content, and privacy requirements. AC-1 uses RFC 2119 compliance levels (MUST/SHOULD/MAY) and is the authoritative reference for contributors using any memory tool.
+
+### Format Overview
 
 Every dataset is a folder containing three files:
 
@@ -78,7 +82,7 @@ Other models are fully supported — declare them in `embedding_model` and users
 3. Open a Pull Request to `community/<your-topic>/`
 4. A maintainer will review for PII, metadata completeness, and scope
 
-See [docs/submission-guide.md](docs/submission-guide.md) for full instructions.
+See [docs/submission-guide.md](docs/submission-guide.md) for full instructions and [docs/AC-1-spec.md](docs/AC-1-spec.md) for the formal dataset standard.
 
 ---
 
@@ -112,8 +116,8 @@ Datasets using the same embedding model as your server are imported directly. Da
 ## Privacy Rules
 
 - **Only domain-scoped memories are shareable.** Personal, interpersonal, and operational memories are never eligible for submission.
-- Memories tagged `personality`, `relationship`, or `style` in the MCP server are excluded from export automatically.
-- Submitters are responsible for ensuring no PII is included. A PII review layer is in development.
+- Memories with blocked tags (`personality`, `relationship`, `style`, `personal`, `private`, `preferences`, `feedback`, `decision`) are excluded from export automatically.
+- Submitters are responsible for ensuring no PII is included. See the [AC-1 spec](docs/AC-1-spec.md) for full privacy and content requirements.
 
 ---
 

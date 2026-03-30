@@ -2,6 +2,8 @@
 
 How to export your agent's domain knowledge and contribute it to AgentCommons.
 
+All datasets must conform to the **[AC-1 Dataset Specification](AC-1-spec.md)**. This guide walks through the practical steps — the spec is the formal reference for requirements.
+
 ---
 
 ## Before You Submit
@@ -15,7 +17,7 @@ Your dataset must contain **domain knowledge only**. This means:
 **Never include:**
 - Personal or interpersonal memories
 - Credentials, tokens, API keys, or any secrets
-- Anything tagged `personality`, `relationship`, or `style` in your MCP server
+- Anything with blocked tags (`personality`, `relationship`, `style`, `personal`, `private`, `preferences`, `feedback`, `decision`)
 - Operational details about your organization, clients, or internal systems
 
 The export tool enforces this automatically — but you are responsible for a final review before submitting.
@@ -87,11 +89,13 @@ Run the validator before submitting:
 python /path/to/agentcommons/tools/validate.py --dataset ./my-dataset
 ```
 
-This checks:
-- All required metadata fields are present
+This checks AC-1 compliance:
+- All three required files are present
+- All required metadata fields are present and non-template
 - Record count matches the actual database
-- No obvious PII patterns in content (basic scan — not a substitute for manual review)
-- Embedding model is declared
+- No blocked tags in any memory record
+- No PII patterns in content (basic scan — not a substitute for manual review)
+- README contains substantive content
 
 ---
 
@@ -113,6 +117,19 @@ Use semantic versioning: `MAJOR.MINOR.PATCH`
 - `MAJOR` — breaking change (different embedding model, major scope change)
 
 When updating an existing dataset, submit to the same path with an incremented version in `metadata.json`. Old versions are preserved in git history.
+
+---
+
+## Using a Different Memory Tool (BYOMCP)
+
+You don't need to use the MCP Memory Server to contribute. Any tool that produces a dataset conforming to the [AC-1 spec](AC-1-spec.md) is welcome. The key requirements:
+
+- SQLite database with the correct `memories` table schema
+- Embedding model declared in metadata
+- Tags follow AC-1 formatting rules (1-3 tags, lowercase, alphanumeric + hyphens)
+- No blocked tags, no PII, domain knowledge only
+
+See the spec for the full list of requirements.
 
 ---
 
