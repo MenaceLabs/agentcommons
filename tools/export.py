@@ -87,6 +87,7 @@ def export_dataset(db_path: Path, tags: list[str], out_path: Path, name: str) ->
     metadata = {
         "name": name,
         "version": "1.0.0",
+        "spec_version": "AC-1.0",
         "embedding_model": embedding_model,
         "topic_tags": tags,
         "agent_type": "engineering",

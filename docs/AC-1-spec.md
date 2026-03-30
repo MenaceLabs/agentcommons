@@ -113,7 +113,7 @@ The validation tooling scans for these patterns. Contributors are responsible fo
 
 ### 6.1 Rules
 
-- Each memory MUST have at least 1 tag and at most 3 tags.
+- Each memory MUST have at least 1 tag and at most 5 tags.
 - Tags MUST be lowercase.
 - Tags MUST contain only alphanumeric characters and hyphens (`a-z`, `0-9`, `-`).
 - Tags MUST NOT exceed 32 characters each.
@@ -250,7 +250,7 @@ The following are explicitly out of scope for AC-1 and may be addressed in futur
 
 1. A SQLite database with the `memories` table (5 columns, no extras)
 2. Embeddings as JSON float arrays, all same dimensionality
-3. 1-3 lowercase hyphenated tags per memory, no blocked tags
+3. 1-5 lowercase hyphenated tags per memory, no blocked tags
 4. Content between 20-10,000 characters, no PII
 5. A `metadata.json` with all 11 required fields filled in
 6. A `README.md` that describes the dataset
